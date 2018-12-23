@@ -30,8 +30,6 @@ public class ExtractMethod {
 
     // Conway's Game of Life
     private void live(boolean[][] board) {
-//        board = InitBHeptominoBoard();
-//        board = InitDiehardBoard();
         int width = board.length;
         int height = board[0].length;
         boolean[][] oldBoard = new boolean[width][height];
@@ -41,7 +39,6 @@ public class ExtractMethod {
         boolean stillAlive = true;
         while (stillAlive) {
             // Render the board
-//            print(Grid.print(width, height, this::showCell));
             print(dumpGrid(board));
 
             // Make a copy of the board

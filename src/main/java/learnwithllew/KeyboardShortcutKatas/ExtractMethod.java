@@ -24,40 +24,41 @@ public class ExtractMethod {
         }
 
         ExtractMethod em = new ExtractMethod();
-        em.live(board);
-    }
-
-
-    // Conway's Game of Life
-    private void live(boolean[][] board) {
-        int width = board.length;
-        int height = board[0].length;
-        boolean[][] oldBoard = new boolean[width][height];
+        int width1 = board.length;
+        int height1 = board[0].length;
+        boolean[][] oldBoard = new boolean[width1][height1];
 
         int generationCount = 0;
 
         boolean stillAlive = true;
         while (stillAlive) {
             // Render the board
-            print(dumpGrid(board));
+            StringBuffer out = new StringBuffer();
+            for (int j = 0; j < height1; ++j) {
+                for (int i = 0; i < width1; ++i) {
+                    out.append(board[i][j] ? "#" : ".").append(" ");
+                }
+                out.append(System.lineSeparator());
+            }
+            SimpleLogger.message(out.toString());
 
             // Make a copy of the board
-            for (int i = 0; i < width; ++i) {
-                for (int j = 0; j < height; ++j) {
+            for (int i = 0; i < width1; ++i) {
+                for (int j = 0; j < height1; ++j) {
                     oldBoard[i][j] = board[i][j];
                 }
             }
 
             int neighborCount = 0;
-            for (int i = 0; i < width; ++i) {
-                for (int j = 0; j < height; ++j) {
+            for (int i = 0; i < width1; ++i) {
+                for (int j = 0; j < height1; ++j) {
                     // Rule 1: Any live cell with fewer than two live neighbors dies, as if by underpopulation.
                     for (int k = -1; k <= 1; ++k) {
                         for (int l = -1; l <= 1; ++l) {
                             if (!(k == 0 && l == 0)) {
                                 int neighborX = i + k;
                                 int neighborY = j + l;
-                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width && neighborY < height) {
+                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width1 && neighborY < height1) {
                                     neighborCount += oldBoard[neighborX][neighborY] ? 1 : 0;
                                 }
                             }
@@ -73,7 +74,7 @@ public class ExtractMethod {
                             if (!(k == 0 && l == 0)) {
                                 int neighborX = i + k;
                                 int neighborY = j + l;
-                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width && neighborY < height) {
+                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width1 && neighborY < height1) {
                                     neighborCount += oldBoard[neighborX][neighborY] ? 1 : 0;
                                 }
                             }
@@ -89,7 +90,7 @@ public class ExtractMethod {
                             if (!(k == 0 && l == 0)) {
                                 int neighborX = i + k;
                                 int neighborY = j + l;
-                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width && neighborY < height) {
+                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width1 && neighborY < height1) {
                                     neighborCount += oldBoard[neighborX][neighborY] ? 1 : 0;
                                 }
                             }
@@ -106,7 +107,7 @@ public class ExtractMethod {
                             if (!(k == 0 && l == 0)) {
                                 int neighborX = i + k;
                                 int neighborY = j + l;
-                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width && neighborY < height) {
+                                if (neighborX >= 0 && neighborY >= 0 && neighborX < width1 && neighborY < height1) {
                                     neighborCount += oldBoard[neighborX][neighborY] ? 1 : 0;
                                 }
                             }
@@ -117,24 +118,25 @@ public class ExtractMethod {
                     }
                 }
             }
-            print("======================== Generation: " + ++generationCount);
+            String s = "======================== Generation: " + ++generationCount;
+            SimpleLogger.message(s);
             int liveCount = 0;
-            for (int i = 0; i < width; ++i) {
-                for (int j = 0; j < height; ++j) {
+            for (int i = 0; i < width1; ++i) {
+                for (int j = 0; j < height1; ++j) {
                     if (board[i][j])
                     ++liveCount;
                 }
             }
             // When everyone dies, end the game.
             if (liveCount == 0) {
-                print("Everyone died! :'(");
+                SimpleLogger.message("Everyone died! :'(");
                 stillAlive = false;
             }
 
             // If this board is the same as the last board, we're done
             boolean same = true;
-            for (int i = 0; i < width; ++i) {
-                for (int j = 0; j < height; ++j) {
+            for (int i = 0; i < width1; ++i) {
+                for (int j = 0; j < height1; ++j) {
                     if (oldBoard[i][j] != board[i][j]) {
                         same = false;
                         break;
@@ -142,26 +144,9 @@ public class ExtractMethod {
                 }
             }
             if (same) {
-                print("Board is in Still Life state. Game stopping.");
+                SimpleLogger.message("Board is in Still Life state. Game stopping.");
                 stillAlive = false;
             }
         }
-    }
-
-    private void print(String s) {
-        SimpleLogger.message(s);
-    }
-
-    private String dumpGrid(boolean[][] board) {
-        int height = board[0].length;
-        int width = board.length;
-        StringBuffer out = new StringBuffer();
-            for (int j = 0; j < height; ++j) {
-                for (int i = 0; i < width; ++i) {
-                out.append(board[i][j] ? "#" : ".").append(" ");
-            }
-            out.append(System.lineSeparator());
-        }
-        return out.toString();
     }
 }
